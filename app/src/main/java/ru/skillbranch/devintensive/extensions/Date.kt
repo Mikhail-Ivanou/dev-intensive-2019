@@ -33,7 +33,7 @@ enum class TimeUnits {
 
     fun plural(value: Int): String {
         return when (this) {
-            TimeUnits.SECOND -> plural(value, "cекунд")
+            TimeUnits.SECOND -> plural(value, "секунд")
             TimeUnits.MINUTE -> plural(value, "минут")
             TimeUnits.HOUR -> pluralHour(value)
             TimeUnits.DAY -> pluralDay(value)
@@ -42,57 +42,68 @@ enum class TimeUnits {
 
     private fun plural(value: Int, time: String): String {
         return when {
-            value == 0 -> "$value $time"
-            value > 10 && value < 20 -> "$value $time"
+            value in 11..19 -> "$value $time"
+            value % 100 in 11..19 -> "$value $time"
             value % 10 == 0 -> "$value $time"
             value % 10 == 1 -> "$value ${time}у"
-            else -> "$value ${time}ы"
+            value % 10 in 2..4 -> "$value ${time}ы"
+            else -> "$value $time"
         }
     }
 
-
     private fun pluralHour(value: Int): String {
         return when {
-            value == 0 -> "$value часов"
-            value > 10 && value < 20 -> "$value часов"
+            value in 11..19 -> "$value часов"
+            value % 100 in 11..19 -> "$value часов"
             value % 10 == 0 -> "$value часов"
             value % 10 == 1 -> "$value час"
-            else -> "$value часа"
+            value % 10 in 2..4 -> "$value часа"
+            else -> "$value часов"
         }
     }
 
     private fun pluralDay(value: Int): String {
-        return when  {
-            value == 0 -> "$value дней"
-            value > 10 && value < 20 -> "$value дней"
+        return when {
+            value in 11..19 -> "$value дней"
+            value  % 100 in 11..19 -> "$value дней"
             value % 10 == 0 -> "$value дней"
             value % 10 == 1 -> "$value день"
-            else -> "$value дня"
+            value % 10 in 2..4 -> "$value дня"
+            else -> "$value дней"
         }
     }
 }
 
-internal fun Date.humanizeDiff(): String {
-    val now = Date()
-    val diff = now.time - time
-    if (diff <= SECOND) {
-        return "только что"
-    } else if (diff <= 45 * SECOND) {
-        return "несколько секунд назад"
-    } else if (diff <= 75 * SECOND) {
-        return "минуту назад"
-    } else if (diff <= 45 * MINUTE) {
-        return "${diff / MINUTE} минут назад"
-    } else if (diff <= 75 * MINUTE) {
-        return "час назад"
-    } else if (diff <= 22 * HOUR) {
-        return "${diff / HOUR} часов назад"
-    } else if (diff <= 26 * HOUR) {
-        return "день назад"
-    } else if (diff <= 360 * DAY) {
-        return "${diff / DAY} дней назад"
-    } else {
-        return "более года назад"
+internal fun Date.humanizeDiff(currDate: Date): String {
+    val diff = currDate.time - time
+    when {
+        diff <= SECOND -> {
+            return "только что"
+        }
+        diff <= 45 * SECOND -> {
+            return "несколько секунд назад"
+        }
+        diff <= 75 * SECOND -> {
+            return "минуту назад"
+        }
+        diff <= 45 * MINUTE -> {
+            return "${diff / MINUTE} минут назад"
+        }
+        diff <= 75 * MINUTE -> {
+            return "час назад"
+        }
+        diff <= 22 * HOUR -> {
+            return "${diff / HOUR} часов назад"
+        }
+        diff <= 26 * HOUR -> {
+            return "день назад"
+        }
+        diff <= 360 * DAY -> {
+            return "${diff / DAY} дней назад"
+        }
+        else -> {
+            return "более года назад"
+        }
     }
 }
 
