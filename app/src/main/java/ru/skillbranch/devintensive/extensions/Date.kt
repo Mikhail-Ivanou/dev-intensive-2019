@@ -30,6 +30,46 @@ enum class TimeUnits {
     MINUTE,
     HOUR,
     DAY
+
+    fun plural(value: Int): String {
+        return when (this) {
+            TimeUnits.SECOND -> plural(value, "cекунд")
+            TimeUnits.MINUTE -> plural(value, "минут")
+            TimeUnits.HOUR -> pluralHour(value)
+            TimeUnits.DAY -> pluralDay(value)
+        }
+    }
+
+    private fun plural(value: Int, time: String): String {
+        return when {
+            value == 0 -> "$value $time"
+            value > 10 && value < 20 -> "$value $time"
+            value % 10 == 0 -> "$value $time"
+            value % 10 == 1 -> "$value ${time}у"
+            else -> "$value ${time}ы"
+        }
+    }
+
+
+    private fun pluralHour(value: Int): String {
+        return when {
+            value == 0 -> "$value часов"
+            value > 10 && value < 20 -> "$value часов"
+            value % 10 == 0 -> "$value часов"
+            value % 10 == 1 -> "$value час"
+            else -> "$value часа"
+        }
+    }
+
+    private fun pluralDay(value: Int): String {
+        return when  {
+            value == 0 -> "$value дней"
+            value > 10 && value < 20 -> "$value дней"
+            value % 10 == 0 -> "$value дней"
+            value % 10 == 1 -> "$value день"
+            else -> "$value дня"
+        }
+    }
 }
 
 internal fun Date.humanizeDiff(): String {
@@ -56,42 +96,3 @@ internal fun Date.humanizeDiff(): String {
     }
 }
 
-internal fun TimeUnits.plural(value: Int): String {
-    return when (this) {
-        TimeUnits.SECOND -> plural(value, "cекунд")
-        TimeUnits.MINUTE -> plural(value, "минут")
-        TimeUnits.HOUR -> pluralHour(value)
-        TimeUnits.DAY -> pluralDay(value)
-    }
-}
-
-private fun plural(value: Int, time: String): String {
-    return when {
-        value == 0 -> "$value $time"
-        value > 10 && value < 20 -> "$value $time"
-        value % 10 == 0 -> "$value $time"
-        value % 10 == 1 -> "$value ${time}у"
-        else -> "$value ${time}ы"
-    }
-}
-
-
-private fun pluralHour(value: Int): String {
-    return when {
-        value == 0 -> "$value часов"
-        value > 10 && value < 20 -> "$value часов"
-        value % 10 == 0 -> "$value часов"
-        value % 10 == 1 -> "$value час"
-        else -> "$value часа"
-    }
-}
-
-private fun pluralDay(value: Int): String {
-    return when  {
-        value == 0 -> "$value дней"
-        value > 10 && value < 20 -> "$value дней"
-        value % 10 == 0 -> "$value дней"
-        value % 10 == 1 -> "$value день"
-        else -> "$value дня"
-    }
-}
