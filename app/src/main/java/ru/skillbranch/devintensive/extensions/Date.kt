@@ -29,7 +29,7 @@ enum class TimeUnits {
     SECOND,
     MINUTE,
     HOUR,
-    DAY
+    DAY;
 
     fun plural(value: Int): String {
         return when (this) {
