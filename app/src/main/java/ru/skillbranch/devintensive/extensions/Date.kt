@@ -54,5 +54,43 @@ internal fun Date.humanizeDiff(): String {
     } else {
         return "более года назад"
     }
+}
 
+internal fun TimeUnits.SECOND.plural(value: Int): String {
+    return plural(value, "cекунд")
+}
+
+internal fun TimeUnits.MINUTE.plural(value: Int): String {
+    return plural(value, "минут")
+}
+
+private fun plural(value: Int, time: String): String {
+    return when (value) {
+        0 -> "$value $time"
+        value > 10 && value < 20 -> "$value $time"
+        value % 10 == 0 -> "$value $time"
+        value % 10 == 1 -> "$value ${time}у"
+        else -> "$value ${time}ы"
+    }
+}
+
+
+internal fun TimeUnits.HOUR.plural(value: Int): String {
+    return  return when (value) {
+        0 -> "$value часов"
+        value > 10 && value < 20 -> "$value часов"
+        value % 10 == 0 -> "$value часов"
+        value % 10 == 1 -> "$value час"
+        else -> "$value часа"
+    }
+}
+
+internal fun TimeUnits.DAY.plural(value: Int): String {
+    return return  return when (value) {
+        0 -> "$value дней"
+        value > 10 && value < 20 -> "$value дней"
+        value % 10 == 0 -> "$value дней"
+        value % 10 == 1 -> "$value день"
+        else -> "$value дня"
+    }
 }
