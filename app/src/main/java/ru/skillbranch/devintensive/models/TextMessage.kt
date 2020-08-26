@@ -16,6 +16,6 @@ class TextMessage(
         val sender = from?.firstName
         val action = if (isIncoming) "получил" else "отправил"
         val time = date.humanizeDiff(Date())
-        return "$sender $action сообщение $text $time"
+        return "$sender $action сообщение \"$text\" $time"
     }
 }
