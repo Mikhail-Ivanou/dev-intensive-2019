@@ -65,8 +65,8 @@ internal fun TimeUnits.MINUTE.plural(value: Int): String {
 }
 
 private fun plural(value: Int, time: String): String {
-    return when (value) {
-        0 -> "$value $time"
+    return when {
+        value == 0 -> "$value $time"
         value > 10 && value < 20 -> "$value $time"
         value % 10 == 0 -> "$value $time"
         value % 10 == 1 -> "$value ${time}у"
@@ -76,8 +76,8 @@ private fun plural(value: Int, time: String): String {
 
 
 internal fun TimeUnits.HOUR.plural(value: Int): String {
-    return  return when (value) {
-        0 -> "$value часов"
+    return when {
+        value == 0 -> "$value часов"
         value > 10 && value < 20 -> "$value часов"
         value % 10 == 0 -> "$value часов"
         value % 10 == 1 -> "$value час"
@@ -86,8 +86,8 @@ internal fun TimeUnits.HOUR.plural(value: Int): String {
 }
 
 internal fun TimeUnits.DAY.plural(value: Int): String {
-    return return  return when (value) {
-        0 -> "$value дней"
+    return when  {
+        value == 0 -> "$value дней"
         value > 10 && value < 20 -> "$value дней"
         value % 10 == 0 -> "$value дней"
         value % 10 == 1 -> "$value день"
