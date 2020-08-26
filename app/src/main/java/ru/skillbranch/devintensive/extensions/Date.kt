@@ -65,7 +65,7 @@ enum class TimeUnits {
     private fun pluralDay(value: Int): String {
         return when {
             value in 11..19 -> "$value дней"
-            value  % 100 in 11..19 -> "$value дней"
+            value % 100 in 11..19 -> "$value дней"
             value % 10 == 0 -> "$value дней"
             value % 10 == 1 -> "$value день"
             value % 10 in 2..4 -> "$value дня"
@@ -74,9 +74,36 @@ enum class TimeUnits {
     }
 }
 
-internal fun Date.humanizeDiff(currDate: Date): String {
-    val diff = currDate.time - time
+internal fun Date.humanizeDiff(date: Date = Date()): String {
+    val diff = date.time - time
     when {
+        diff < -360 * DAY -> {
+            return "более чем через год"
+        }
+        diff < -26 * HOUR -> {
+            val plural = TimeUnits.DAY.plural(-(diff / DAY).toInt())
+            return "через $plural"
+        }
+        diff < -22 * HOUR -> {
+            return "через день"
+        }
+        diff < -75 * MINUTE -> {
+            val plural = TimeUnits.HOUR.plural(-(diff / HOUR).toInt())
+            return "через $plural"
+        }
+        diff < -45 * MINUTE -> {
+            return "через час"
+        }
+        diff < -75 * SECOND -> {
+            val plural = TimeUnits.MINUTE.plural(-(diff / MINUTE).toInt())
+            return "через $plural"
+        }
+        diff < -45 * SECOND -> {
+            return "через минуту"
+        }
+        diff < -SECOND -> {
+            return "через несколько секунд"
+        }
         diff <= SECOND -> {
             return "только что"
         }
@@ -87,19 +114,22 @@ internal fun Date.humanizeDiff(currDate: Date): String {
             return "минуту назад"
         }
         diff <= 45 * MINUTE -> {
-            return "${diff / MINUTE} минут назад"
+            val plural = TimeUnits.MINUTE.plural((diff / MINUTE).toInt())
+            return "$plural назад"
         }
         diff <= 75 * MINUTE -> {
             return "час назад"
         }
         diff <= 22 * HOUR -> {
-            return "${diff / HOUR} часов назад"
+            val plural = TimeUnits.HOUR.plural((diff/ HOUR).toInt())
+            return "$plural назад"
         }
         diff <= 26 * HOUR -> {
             return "день назад"
         }
         diff <= 360 * DAY -> {
-            return "${diff / DAY} дней назад"
+            val plural = TimeUnits.DAY.plural((diff / DAY).toInt())
+            return "$plural назад"
         }
         else -> {
             return "более года назад"
