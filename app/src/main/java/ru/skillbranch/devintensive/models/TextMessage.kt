@@ -1,5 +1,6 @@
 package ru.skillbranch.devintensive.models
 
+import ru.skillbranch.devintensive.extensions.humanizeDiff
 import java.util.*
 
 class TextMessage(
@@ -12,6 +13,9 @@ class TextMessage(
 ) : BaseMessage(id, from, chat, isIncoming, date) {
 
     override fun formatMessage(): String {
-        TODO("Not yet implemented")
+        val sender = from?.firstName
+        val action = if (isIncoming) "получил" else "отправил"
+        val time = date.humanizeDiff(Date())
+        return "$sender $action сообщение $text $time"
     }
 }
